@@ -67,13 +67,26 @@ $(document).ready(function(){
         }
 
         if(~event.target.id.indexOf("edit")){
-        logAction(event.target.id.split(' ')[0]);
+            $('.modal-content').append('<button id="newNameButton ' + event.target.id.split(' ')[1] + '" class="target">Ок</button>');
+            $('.dialogWindowId').show();
+        }
+
+        if(~event.target.id.indexOf("newNameButton")){
+            logAction(event.target.id.split(' ')[0]);
             for(i = 0; i < menu.length; i++){
-                if(menu[i].id == event.target.id.split(' ')[1]){
-                    menu[i].name = 'Новое имя';
-                    renderMenu();
+                if(menu[i].id == Number(event.target.id.split(' ')[1])){
+                    menu[i].name = $('#newName').val();
+                    $("#newName").val("");
+                    $(this).remove();
                 }
             }
+            $('.dialogWindowId').hide();
+            renderMenu();
         }
     });
+
+    $(document).on('click','.close',function(){
+       $('.dialogWindowId').hide();
+    });
+
 });
