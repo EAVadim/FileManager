@@ -1,0 +1,28 @@
+.list > ul {
+    font-family:Arial;
+    font-size:14px;
+    background-color:#696969;
+    border-radius:5px;
+    border:1px solid #808080;
+    color:#ffffff;
+}
+li {
+    list-style-type: none;
+}
+.target {
+    background-color:#696969;
+    border-radius:2px;
+    border:1px solid #808080;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:12px;
+    padding:5px 10px;
+    text-decoration:none;
+    margin-right:1px;
+    margin-left:1px;
+    margin:1px;
+}
+.target:hover { background-color:#808080; }
+.target:active { position:relative;top:1px; }
