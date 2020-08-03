@@ -10,32 +10,40 @@ $(document).ready(function(){
                 strStart+="<ul>";
                 strEnd+="</ul>";
             }
-        $(".list").append(strStart + menu[i].name +'<button class="target" id="addSameLevel '+menu[i].id+'">+</button><button class="target" id="addNextLevel '+menu[i].id+'">добавить на след уровень</button>'+'<button class="target" id="delete '+menu[i].id+'">удалить</button><button class="target" id="edit '+menu[i].id+'">редактировать</button><button class="target" id="hide '+menu[i].id+'">скрыть</button><button class="target" id="show '+menu[i].id+'">открыть</button>' + strEnd);
+            $(".list").append(strStart + menu[i].name +'<button class="target" id="addSameLevel '+menu[i].id+'">Добавить</button><button class="target" id="addNextLevel '+menu[i].id+'">Добавить сабуровень</button>'+'<button class="target" id="delete '+menu[i].id+'">Удалить</button><button class="target" id="edit '+menu[i].id+'">Редактировать</button>' + strEnd);
         }
+    }
+
+    function logAction(action){
+        $(".logs").append("<p>" + new Date().toLocaleString() + " Вызвано действие " + action + "</p>");
     }
 
     renderMenu();
 
     $(document).on("click", ".target", function(event) {
         if(~event.target.id.indexOf("addSameLevel")){
+        logAction(event.target.id.split(' ')[0]);
             for(i = 0; i < menu.length; i++){
                 if(menu[i].id == event.target.id.split(' ')[1]){
-                    for(j = i; j < menu.length; j++){
-                        if(menu[i].level == menu[j].level){
-                            if(j-i == 1){
+                    j = i;
+                    while(j < menu.length - 1){
+                        if(menu[i].level >= menu[j].level){
+                            if(j - i == 1){
                                 menu.splice(i + 1, 0, {name: 'Новая папка' + menu.length, level: menu[i].level, id: menu.length + 1});
                                 renderMenu();
                                 return;
                             }
-                            menu.splice(j + 1, 0, {name: 'Новая папка' + menu.length, level: menu[j].level, id: menu.length + 1});
-                            renderMenu();
                         }
+                        j++;
                     }
+                    menu.splice(j + 1, 0, {name: 'Новая папка' + menu.length, level: menu[i].level, id: menu.length + 1});
+                    renderMenu();
                 }
             }
         }
 
         if(~event.target.id.indexOf("addNextLevel")){
+        logAction(event.target.id.split(' ')[0]);
             for(i = 0; i < menu.length; i++){
                 if(menu[i].id == event.target.id.split(' ')[1]){
                     menu.splice(i + 1, 0, {name: 'Новая папка' + menu.length, level: menu[i].level + 1, id: menu.length + 1});
@@ -45,8 +53,9 @@ $(document).ready(function(){
         }
 
         if(~event.target.id.indexOf("delete")){
+        logAction(event.target.id.split(' ')[0]);
             for(i = 0; i < menu.length; i++){
-                if(menu[i].id == event.target.id.split(' ')[1]){
+                if(menu[i].id == Number(event.target.id.split(' ')[1])){
                     currentLevel = menu[i].level;
                     menu.splice($.inArray(menu[i],menu) ,1);
                     while (i < menu.length && menu[i].level != currentLevel){
@@ -58,18 +67,10 @@ $(document).ready(function(){
         }
 
         if(~event.target.id.indexOf("edit")){
+        logAction(event.target.id.split(' ')[0]);
             for(i = 0; i < menu.length; i++){
                 if(menu[i].id == event.target.id.split(' ')[1]){
                     menu[i].name = 'Новое имя';
-                    renderMenu();
-                }
-            }
-        }
-
-        if(~event.target.id.indexOf("hide")){
-            for(i = 0; i < menu.length; i++){
-                if(menu[i].id == event.target.id.split(' ')[1]){
-                    $('.list').hide();
                     renderMenu();
                 }
             }
